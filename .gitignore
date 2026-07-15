@@ -19,6 +19,16 @@
 *.dep
 *_linkInfo.xml
 
+# Secrets and local credentials
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+credentials.*
+secrets.*
+
 # Logs and temporary files
 *.log
 *.tmp
@@ -28,4 +38,3 @@
 # Windows system files
 Thumbs.db
 Desktop.ini
-
