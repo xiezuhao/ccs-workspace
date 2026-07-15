@@ -1,0 +1,31 @@
+# CCS Theia local workspace state
+.theia/
+.metadata/
+
+# Old editor configuration backup
+01_.vscode/
+
+# CCS build output directories
+**/Debug/
+**/Release/
+**/.clangd/
+
+# Compiler and linker outputs
+*.o
+*.obj
+*.out
+*.map
+*.d
+*.dep
+*_linkInfo.xml
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*~
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
