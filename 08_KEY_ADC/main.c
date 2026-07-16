@@ -43,9 +43,35 @@ int main(void)
     OLED_ColorTurn(0);//0正常显示，1 反色显示
     OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
     OLED_Clear();
-    NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
+    //NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
+    int sttus =0;
 
     while (1) {
+
+
+        delay_ms(10);
+        uint8_t key_state = get_key_state(KEY_KEY9_PIN);
+        IF (key_state == 0){
+status = (status+1)%3;
+
+        }
+        if(status ==0){
+            OLED_Clear();
+            OLED_ShowString(0, 0, (u8 *)"status: 0", 16);
+            OLED_Refresh();
+
+        }
+        else if(status ==1){
+            OLED_Clear();
+            OLED_ShowString(0, 0, (u8 *)"status : 1", 16);
+            OLED_Refresh();
+
+    }
+    else if(status ==2){
+            OLED_Clear();
+            OLED_ShowString(0, 0, (u8 *)"status : 2", 16);
+            OLED_Refresh();
+    }
         // Toggle the LED every 500 ms
         // char oled_str[50];
         // int int_a = 20;
@@ -56,12 +82,13 @@ int main(void)
 
         // OLED_ShowString(0, 0, (u8 *)"Hello, TI!", 16);
         // OLED_Refresh();
-        delay_ms(500);
-        DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
-        DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
-        delay_ms(500);
-        DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
-        DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
-        UART_send_string(PRINT_INST, "hello, ti!\n");
+        //delay_ms(500);
+       // DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
+        //DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
+       // delay_ms(500);
+       // DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
+       // DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
+       // UART_send_string(PRINT_INST, "hello, ti!\n");
+
     }
 }
