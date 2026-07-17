@@ -23,7 +23,7 @@ if(stepper_id == 2){
 }
 
 //步进控制
-void step_motor_step_set(uint8_t step. uint8_t stepper_id)
+void step_motor_step_set(uint8_t step, uint8_t stepper_id)
 {
 if(stepper_id == 2){
     if(step == 0){

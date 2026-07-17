@@ -45,7 +45,7 @@ int main(void)
    // OLED_Clear()
    step_motor_init();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    step_motor_dir_set( 1, 2 );             //设置步进电机2的方向伟正转
+    step_motor_dir_set( 0 , 2 );             //设置步进电机2的方向伟正转
 
     while (1) {
 
