@@ -50,6 +50,21 @@ int main(void)
     step_motor_start(2);
 
     while (1) {
+
+
+
+step_motor_dir_set(0,2);
+        step_set_speed(30,2);
+        delay_ms(3000);
+        step_set_speed(180,2);
+        delay_ms(3000);
+
+  step_motor_dir_set(1,2);
+        step_set_speed(30,2);
+        delay_ms(1000);
+        step_set_speed(180,2);
+        delay_ms(1000);
+
         // Toggle the LED every 500 ms
         // char oled_str[50];
         // int int_a = 20;
