@@ -13,6 +13,8 @@ const GPIO   = scripting.addModule("/ti/driverlib/GPIO", {}, false);
 const GPIO1  = GPIO.addInstance();
 const I2C    = scripting.addModule("/ti/driverlib/I2C", {}, false);
 const I2C1   = I2C.addInstance();
+const PWM    = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1   = PWM.addInstance();
 const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
 const UART   = scripting.addModule("/ti/driverlib/UART", {}, false);
 const UART1  = UART.addInstance();
@@ -37,17 +39,15 @@ pinFunction4.inputFreq = 40;
 pinFunction4.enable    = true;
 
 GPIO1.$name                         = "STEP_MOTOR";
-GPIO1.associatedPins.create(5);
-GPIO1.associatedPins[0].$name       = "PWM2";
-GPIO1.associatedPins[0].pin.$assign = "PA12";
-GPIO1.associatedPins[1].$name       = "DIR2";
-GPIO1.associatedPins[1].pin.$assign = "PA13";
-GPIO1.associatedPins[2].$name       = "DCY2";
-GPIO1.associatedPins[2].pin.$assign = "PA14";
-GPIO1.associatedPins[3].$name       = "SLP2";
-GPIO1.associatedPins[3].pin.$assign = "PA15";
-GPIO1.associatedPins[4].$name       = "RST2";
-GPIO1.associatedPins[4].pin.$assign = "PA16";
+GPIO1.associatedPins.create(4);
+GPIO1.associatedPins[0].$name       = "DIR2";
+GPIO1.associatedPins[0].pin.$assign = "PA13";
+GPIO1.associatedPins[1].$name       = "DCY2";
+GPIO1.associatedPins[1].pin.$assign = "PA14";
+GPIO1.associatedPins[2].$name       = "SLP2";
+GPIO1.associatedPins[2].pin.$assign = "PA15";
+GPIO1.associatedPins[3].$name       = "RST2";
+GPIO1.associatedPins[3].pin.$assign = "PA16";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
@@ -73,6 +73,21 @@ I2C1.sclPinConfig.onlyInternalResistor = scripting.forceWrite(false);
 I2C1.sclPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 I2C1.sclPinConfig.enableConfig         = true;
 I2C1.sclPinConfig.internalResistor     = "PULL_UP";
+
+PWM1.$name                              = "DCC_100_PWM2";
+PWM1.ccIndex                            = [0];
+PWM1.timerCount                         = 10000;
+PWM1.clockDivider                       = 8;
+PWM1.pwmMode                            = "EDGE_ALIGN_UP";
+PWM1.PWM_CHANNEL_0.$name                = "ti_driverlib_pwm_PWMTimerCC0";
+PWM1.PWM_CHANNEL_0.dutyCycle            = 50;
+PWM1.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric4";
+PWM1.ccp0PinConfig.direction            = scripting.forceWrite("OUTPUT");
+PWM1.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
+PWM1.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
+PWM1.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+PWM1.peripheral.$assign                 = "TIMG0";
+PWM1.peripheral.ccp0Pin.$assign         = "PA12";
 
 SYSCTL.forceDefaultClkConfig = true;
 SYSCTL.clockTreeEn           = true;

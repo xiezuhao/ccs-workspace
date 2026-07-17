@@ -46,14 +46,10 @@ int main(void)
    // OLED_Clear()
    step_motor_init();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    step_motor_dir_set( 0 , 2 );             //设置步进电机2的方向伟正转
+    // step_motor_dir_set( 0 , 2 );             //设置步进电机2的方向伟正转
+    step_motor_start(2);
 
     while (1) {
-
-        step_motor_step_set(1,2);
-        delay_ms(5);     //延时5毫秒
-          step_motor_step_set(0,2);
-        delay_ms(5);      //延时5毫秒
         // Toggle the LED every 500 ms
         // char oled_str[50];
         // int int_a = 20;

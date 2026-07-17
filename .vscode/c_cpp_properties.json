@@ -22,6 +22,7 @@
                 "${workspaceFolder}/08_KEY_ADC/Debug/.clangd/compile_commands.json",
                 "${workspaceFolder}/09_PWM_SERVO/Debug/.clangd/compile_commands.json",
                 "${workspaceFolder}/14_step_motor_1/Debug/.clangd/compile_commands.json",
+                "${workspaceFolder}/15_STEP_MOTOR_2/Debug/.clangd/compile_commands.json",
                 "${workspaceFolder}/SPI_OLED/Debug/.clangd/compile_commands.json"
             ],
             "cStandard": "c11",
