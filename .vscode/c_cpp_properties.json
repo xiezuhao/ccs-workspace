@@ -14,6 +14,7 @@
                 "__USE_SYSCONFIG__"
             ],
             "compilerPath": "D:/ti/CCS2050/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe",
+            "compileCommands": "${workspaceFolder}/08_KEY_ADC/Debug/.clangd/compile_commands.json",
             "cStandard": "c11",
             "cppStandard": "c++11",
             "intelliSenseMode": "windows-clang-arm"
