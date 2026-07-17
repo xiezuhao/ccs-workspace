@@ -55,15 +55,18 @@ int main(void)
 
 step_motor_dir_set(0,2);
         step_set_speed(30,2);
-        delay_ms(3000);
-        step_set_speed(180,2);
+        step_motor_set_angle(90,2);
         delay_ms(3000);
 
-  step_motor_dir_set(1,2);
-        step_set_speed(30,2);
-        delay_ms(1000);
-        step_set_speed(180,2);
-        delay_ms(1000);
+//         delay_ms(3000);
+//         step_set_speed(180,2);
+//         delay_ms(3000);
+
+//   step_motor_dir_set(1,2);
+//         step_set_speed(30,2);
+//         delay_ms(1000);
+//         step_set_speed(180,2);
+//         delay_ms(1000);
 
         // Toggle the LED every 500 ms
         // char oled_str[50];

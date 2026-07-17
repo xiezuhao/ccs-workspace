@@ -19,5 +19,5 @@ void step_motor_init(void);
 void step_motor_start(uint8_t stepper_id);
 void step_motor_dir_set(uint8_t direction, uint8_t stepper_id);
 void step_set_speed(uint8_t speed, uint8_t stepper_id);
-
+void step_motor_set_angle(uint8_t angle, uint8_t stepper_id);
 #endif  //STEP_MOTOR_H

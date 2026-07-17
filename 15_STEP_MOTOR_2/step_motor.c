@@ -30,12 +30,50 @@ void step_set_speed(uint8_t speed, uint8_t stepper_id)
 {
     if (stepper_id == 2) {
         // 根据速度设置PWM频率
-        uint32_t frequency = (uint32_t) (speed / 0.05625f);
+        uint32_t frequency = (uint32_t) (speed / 0.05625);
         frequency = frequency > 0U ? frequency : 1U;
 
         uint32_t period = DCC_100_PWM2_INST_CLK_FREQ / frequency;
         DL_Timer_setLoadValue(DCC_100_PWM2_INST, period);
         DL_Timer_setCaptureCompareValue(
-            DCC_100_PWM2_INST, period / 2U, DL_TIMER_CC_0_INDEX);
+            DCC_100_PWM2_INST, period / 2, GPIO_DCC_100_PWM2_C0_IDX);
     }
 }
+
+uint32_t step_remain_2 = 0;
+
+void step_motor_set_angle(uint8_t angle, uint8_t stepper_id){
+
+    if (stepper_id == 2){
+
+        step_remain_2 = (uint32_t)(angle/0.05625);
+    
+    }
+void step_motor_start(uint8_t stepper_id);
+}
+
+void DCC_100_PWM2_INST_IRQHandler()
+{
+    
+
+    switch (DL_Timer_getPendingInterrupt(DCC_100_PWM2_INST))
+    {
+    case DL_TIMER_IIDX_LOAD:
+        {   
+if(step_remain_2 == 0){
+    step_motor_stop(2);
+
+}
+
+
+
+         step_remain_2--;
+            break;
+        }
+    
+    default:
+        break;
+    }
+}
+
+
