@@ -35,6 +35,7 @@
 #include "oled.h"
 #include <stdio.h>
 #include "uart.h"
+#include "key.h"
 
 int main(void)
 {
@@ -44,27 +45,44 @@ int main(void)
     OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
     OLED_Clear();
     //NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    int sttus =0;
+    NVIC_EnableIRQ(KEY_INT_IRQN);
+
+    /* Wait for the internal voltage reference before starting conversions. */
+    while (DL_VREF_CTL1_READY_NOTRDY == DL_VREF_getStatus(VREF)) {
+    }
+    DL_ADC12_startConversion(xuanniu_INST);
 
     while (1) {
+        //等ADC采样结束
+        delay_ms(10);
+
+        //获取 ADC采样结果
+        uint16_t adc_result =
+            DL_ADC12_getMemResult(xuanniu_INST, xuanniu_ADCMEM_0);
+        float adc_value = (float) adc_result *
+                          xuanniu_ADCMEM_0_REF_VOLTAGE_V / 4096.0f;
+
+        char oled_str[50];
+        sprintf(oled_str, "ADC Value: %.2f V", adc_value);
+        OLED_ShowString(0, 16, (u8 *)oled_str, 16);
+        OLED_Refresh();
 
 
         delay_ms(10);
-        uint8_t key_state = get_key_state(KEY_KEY9_PIN);
-        IF (key_state == 0){
-status = (status+1)%3;
 
-        }
+
         if(status ==0){
             OLED_Clear();
             OLED_ShowString(0, 0, (u8 *)"status: 0", 16);
             OLED_Refresh();
+
 
         }
         else if(status ==1){
             OLED_Clear();
             OLED_ShowString(0, 0, (u8 *)"status : 1", 16);
             OLED_Refresh();
+
 
     }
     else if(status ==2){
