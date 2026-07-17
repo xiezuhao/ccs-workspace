@@ -35,7 +35,6 @@
 #include "oled.h"
 #include <stdio.h>
 #include "uart.h"
-#include "step_motor.h"
 
 int main(void)
 {
