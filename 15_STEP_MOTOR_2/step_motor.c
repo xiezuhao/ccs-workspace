@@ -6,6 +6,7 @@ void step_motor_init(void){
     DL_GPIO_setPins(STEP_MOTOR_PORT,STEP_MOTOR_SLP2_PIN);
     DL_GPIO_setPins(STEP_MOTOR_PORT,STEP_MOTOR_DIR2_PIN);
     DL_GPIO_setPins(STEP_MOTOR_PORT,STEP_MOTOR_DCY2_PIN);
+    NVIC_EnableIRQ(DCC_100_PWM2_INST_INT_IRQN);
 }
 
 //方向控制
@@ -23,7 +24,16 @@ void step_motor_dir_set(uint8_t direction, uint8_t stepper_id)
 void step_motor_start(uint8_t stepper_id)
 {
     if (stepper_id == 2) {
+        DL_Timer_setTimerCount(
+            DCC_100_PWM2_INST, DL_Timer_getLoadValue(DCC_100_PWM2_INST));
         DL_Timer_startCounter(DCC_100_PWM2_INST);
+    }
+}
+
+void step_motor_stop(uint8_t stepper_id)
+{
+    if (stepper_id == 2) {
+        DL_Timer_stopCounter(DCC_100_PWM2_INST);
     }
 }
 void step_set_speed(uint8_t speed, uint8_t stepper_id)
@@ -40,40 +50,38 @@ void step_set_speed(uint8_t speed, uint8_t stepper_id)
     }
 }
 
-uint32_t step_remain_2 = 0;
+static volatile uint32_t step_remain_2 = 0U;
 
-void step_motor_set_angle(uint8_t angle, uint8_t stepper_id){
-
-    if (stepper_id == 2){
-
-        step_remain_2 = (uint32_t)(angle/0.05625);
-    
+void step_motor_set_angle(uint8_t angle, uint8_t stepper_id)
+{
+    if (stepper_id == 2) {
+        step_motor_stop(stepper_id);
+        step_remain_2 = (uint32_t) (angle / 0.05625f);
+        if (step_remain_2 > 0U) {
+            step_motor_start(stepper_id);
+        }
     }
-void step_motor_start(uint8_t stepper_id);
 }
 
-void DCC_100_PWM2_INST_IRQHandler()
+void DCC_100_PWM2_INST_IRQHandler(void)
 {
     
 
     switch (DL_Timer_getPendingInterrupt(DCC_100_PWM2_INST))
     {
     case DL_TIMER_IIDX_LOAD:
-        {   
-if(step_remain_2 == 0){
-    step_motor_stop(2);
-
-}
-
-
-
-         step_remain_2--;
-            break;
+        if (step_remain_2 > 0U) {
+            step_remain_2--;
+            if (step_remain_2 == 0U) {
+                step_motor_stop(2);
+            }
+        } else {
+            step_motor_stop(2);
         }
+        break;
     
     default:
         break;
     }
 }
-
 

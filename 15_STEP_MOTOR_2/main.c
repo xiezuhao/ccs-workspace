@@ -47,7 +47,6 @@ int main(void)
    step_motor_init();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
     // step_motor_dir_set( 0 , 2 );             //设置步进电机2的方向伟正转
-    step_motor_start(2);
 
     while (1) {
 
