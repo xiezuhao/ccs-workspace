@@ -39,17 +39,25 @@ void step_set_speed(uint8_t speed,uint8_t stepper_id)
 }
 
 
-uint32_t step_remain_2=0;
+static volatile uint32_t step_remain_2 = 0;
+static volatile uint8_t stepper_busy_2 = 0;
 
 void stepmotor_set_angle(uint8_t angle,uint8_t stepper_id)
 {
     if (stepper_id == 2){
         //根据角度设置步数
-        step_remain_2= (uint32_t)(angle / 0.05625) ;//计算所需步数
+        step_remain_2 = (uint32_t)(angle / 0.05625);//计算所需步数
+        stepper_busy_2 = (step_remain_2 > 0U) ? 1U : 0U;
+        if (stepper_busy_2 != 0U) {
+            stepmotor_start(stepper_id);
+        }
     }
-    stepmotor_start(stepper_id);
 }
 
+uint8_t stepmotor_is_busy(uint8_t stepper_id)
+{
+    return (stepper_id == 2) ? stepper_busy_2 : 0U;
+}
 
 
 // 方向控制
@@ -70,8 +78,9 @@ void DCC_100_PWM2_INST_IRQHandler()
      {
     case DL_TIMER_IIDX_LOAD:
         {  
-            if (step_remain_2 == 0){
+            if (step_remain_2 == 0U){
                 stepmotor_stop(2);
+                stepper_busy_2 = 0;
                 break;
              }
              step_remain_2--;
