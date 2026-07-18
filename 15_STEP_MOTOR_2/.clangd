@@ -2,7 +2,7 @@
 
 CompileFlags:
    CompilationDatabase: Debug/.clangd
+   Add: [-fgnuc-version=4.2.1]
 
 Diagnostics:
    Suppress: '*'
-
