@@ -12,9 +12,11 @@ Assert-Match $driver 'static\s+volatile\s+uint32_t\s+step_remain_2\s*=\s*0\s*;' 
 Assert-Match $driver 'static\s+volatile\s+uint8_t\s+stepper_busy_2\s*=\s*0\s*;' 'Missing volatile busy flag'
 Assert-Match $driver 'uint8_t\s+stepmotor_is_busy\s*\(uint8_t\s+stepper_id\s*\)' 'Missing busy-state implementation'
 Assert-Match $driver 'stepmotor_stop\(2\);\s*stepper_busy_2\s*=\s*0\s*;' 'ISR must clear busy only after stopping the timer'
-Assert-Match $header '#define\s+STEPMOTOR_STEP_ANGLE_DEG\s+\(0\.225f\)' 'Motor and driver must use the measured 0.225-degree angle per pulse'
+Assert-Match $header '#define\s+STEPMOTOR_STEP_ANGLE_DEG\s+\(0\.9f\)' '14H28HM-0404A2 must use its measured 0.9-degree angle per pulse'
+Assert-Match $header '#define\s+STEPMOTOR_DIR_SETUP_US\s+\(2U\)' 'Direction setup delay must be 2 microseconds'
 Assert-Match $driver 'speed\s*/\s*STEPMOTOR_STEP_ANGLE_DEG' 'Speed conversion must use the configured step angle'
 Assert-Match $driver 'angle\s*/\s*STEPMOTOR_STEP_ANGLE_DEG' 'Angle conversion must use the configured step angle'
+Assert-Match $driver 'delay_cycles\s*\(\s*\(CPUCLK_FREQ\s*/\s*1000000U\)\s*\*\s*STEPMOTOR_DIR_SETUP_US\)\s*;' 'Direction must settle before STEP pulses start'
 Assert-Match $syscfg 'PWM1\.clockPrescale\s*=\s*3\s*;' 'PWM timer prescale must keep the 60-degree-per-second period within 16 bits'
 
 $main = Get-Content -Raw -LiteralPath (Join-Path $projectRoot 'main.c')

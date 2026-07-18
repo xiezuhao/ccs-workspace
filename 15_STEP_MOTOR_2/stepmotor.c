@@ -71,6 +71,8 @@ void stepmotor_dir_set(uint8_t direction, uint8_t stepper_id)
         }else{
             DL_GPIO_setPins(step_motor_PORT, step_motor_DIR2_PIN);
         }
+        delay_cycles(
+            (CPUCLK_FREQ / 1000000U) * STEPMOTOR_DIR_SETUP_US);
     }
 }
 

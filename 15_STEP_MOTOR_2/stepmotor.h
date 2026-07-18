@@ -9,13 +9,14 @@
 // PA15 SLP
 // PA16 RST
 
-// 14H28HM-0404A2为0.9度整步电机，每圈400整步
-// 当前DRV8825为1/4细分，因此一个STEP脉冲对应0.225度
-// 脉冲频率 = 角速度 / 0.225度
+// 14H28HM-0404A2为0.9度整步电机，每圈400步
+// 当前实机每个STEP脉冲对应0.9度
+// 脉冲频率 = 角速度 / 0.9度
 
 #include "ti_msp_dl_config.h"
 
-#define STEPMOTOR_STEP_ANGLE_DEG (0.225f)
+#define STEPMOTOR_STEP_ANGLE_DEG (0.9f)
+#define STEPMOTOR_DIR_SETUP_US   (2U)
 
 void stepmotor_init(void);
 void stepmotor_dir_set(uint8_t direction, uint8_t stepper_id);
