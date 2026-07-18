@@ -37,6 +37,22 @@
 #include "uart.h"
 #include "stepmotor.h"
 
+#define STEPPER_ID          (2U)
+#define STEPPER_LEFT        (0U)
+#define STEPPER_RIGHT       (1U)
+#define SWEEP_ANGLE         (90U)
+#define SWEEP_SPEED         (60U)
+#define ENDPOINT_PAUSE_MS   (1000U)
+
+static void stepmotor_move_and_wait(uint8_t direction)
+{
+    stepmotor_dir_set(direction, STEPPER_ID);
+    stepmotor_set_angle(SWEEP_ANGLE, STEPPER_ID);
+    while (stepmotor_is_busy(STEPPER_ID) != 0U) {
+    }
+    delay_ms(ENDPOINT_PAUSE_MS);
+}
+
 int main(void)
 {
     SYSCFG_DL_init();
@@ -46,41 +62,10 @@ int main(void)
     // OLED_Clear();
     stepmotor_init();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    stepmotor_dir_set(0,2);//设置步进电机2的方向为正转
-    stepmotor_start(2);//启动步进电机2
-    step_set_speed(60, 2);//设置步进电机2的速度为60角度/秒
+    step_set_speed(SWEEP_SPEED, STEPPER_ID);
 
     while (1) {
-        stepmotor_dir_set(0, 2);
-        stepmotor_set_angle(90, 2);//设置步进电机2转动90度
-        delay_ms(2000);//延时5秒
-        // stepmotor_dir_set(0,2);
-        // step_set_speed(30,2);//设置步进电机2的速度为30角度/秒
-        // delay_ms(1000);//延时3000毫秒
-        // step_set_speed(180,2);//设置步进电机2的速度为180角度/秒
-        // delay_ms(1000);//延时3000毫秒
-
-        // stepmotor_dir_set(1,2);
-        // step_set_speed(30,2);//设置步进电机2的速度为30角度/秒
-        // delay_ms(1000);//延时3000毫秒
-        // step_set_speed(180,2);//设置步进电机2的速度为180角度/秒
-        // delay_ms(1000);//延时3000毫秒
-
-        // Toggle the LED every 500 ms
-        // char oled_str[50];
-        // int int_a = 20;
-        // sprintf(oled_str, (const char *)"Integer: %d", int_a);
-        // OLED_ShowString(0, 46, (u8 *)oled_str, 16);
-        // OLED_Refresh();
-        
-        // OLED_ShowString(0,0,(u8*)"Hello World!",16);
-        // OLED_Refresh();
-        // delay_ms(500);
-        // DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
-        // DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
-        // delay_ms(500);
-        // DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
-        // DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
-        // UART_send_string(PRINT_INST,"Hello World\n");
+        stepmotor_move_and_wait(STEPPER_LEFT);
+        stepmotor_move_and_wait(STEPPER_RIGHT);
     }
 }
