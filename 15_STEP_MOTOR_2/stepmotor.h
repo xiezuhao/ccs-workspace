@@ -9,12 +9,12 @@
 // PA15 SLP
 // PA16 RST
 
-// 一脉冲 0.05625度
-// 角速度 = 0.05625度 * 脉冲频率
-// 脉冲频率 = 角速度 / 0.05625度
-// 30角速度：30 / 0.05625 = 533.33Hz
+// DRV8825的M0/M1/M2未置高，当前硬件为整步模式
+// 一脉冲1.8度，脉冲频率 = 角速度 / 1.8度
 
 #include "ti_msp_dl_config.h"
+
+#define STEPMOTOR_STEP_ANGLE_DEG (1.8f)
 
 void stepmotor_init(void);
 void stepmotor_dir_set(uint8_t direction, uint8_t stepper_id);

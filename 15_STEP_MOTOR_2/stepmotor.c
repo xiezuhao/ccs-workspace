@@ -24,7 +24,8 @@ void step_set_speed(uint8_t speed,uint8_t stepper_id)
 {
     if(stepper_id == 2){
         //根据速度设置PWM频率
-        uint32_t frequency = (uint32_t)(speed / 0.05625) ;//计算所需的PWM频率
+        uint32_t frequency =
+            (uint32_t)(speed / STEPMOTOR_STEP_ANGLE_DEG);//计算所需的PWM频率
         frequency = frequency > 0 ? frequency:1;
         // float period_sec = 1.0f/frequency;
         // 1/DCC_100_PWM2_INST_CLK_FREQ
@@ -46,7 +47,8 @@ void stepmotor_set_angle(uint8_t angle,uint8_t stepper_id)
 {
     if (stepper_id == 2){
         //根据角度设置步数
-        step_remain_2 = (uint32_t)(angle / 0.05625);//计算所需步数
+        step_remain_2 =
+            (uint32_t)(angle / STEPMOTOR_STEP_ANGLE_DEG);//计算所需步数
         stepper_busy_2 = (step_remain_2 > 0U) ? 1U : 0U;
         if (stepper_busy_2 != 0U) {
             stepmotor_start(stepper_id);
