@@ -21,6 +21,7 @@
 void stepmotor_init(void);
 void stepmotor_dir_set(uint8_t direction, uint8_t stepper_id);
 void stepmotor_start(uint8_t stepper_id);
+void stepmotor_stop(uint8_t stepper_id);
 void step_set_speed(uint8_t speed,uint8_t stepper_id);
 void stepmotor_set_angle(uint8_t angle,uint8_t stepper_id);
 uint8_t stepmotor_is_busy(uint8_t stepper_id);

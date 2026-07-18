@@ -42,14 +42,15 @@
 #define STEPPER_RIGHT       (1U)
 #define SWEEP_ANGLE         (90U)
 #define SWEEP_SPEED         (60U)
+#define SWEEP_MOVE_TIME_MS  (1600U)
 #define ENDPOINT_PAUSE_MS   (1000U)
 
 static void stepmotor_move_and_wait(uint8_t direction)
 {
     stepmotor_dir_set(direction, STEPPER_ID);
     stepmotor_set_angle(SWEEP_ANGLE, STEPPER_ID);
-    while (stepmotor_is_busy(STEPPER_ID) != 0U) {
-    }
+    delay_ms(SWEEP_MOVE_TIME_MS);
+    stepmotor_stop(STEPPER_ID);
     delay_ms(ENDPOINT_PAUSE_MS);
 }
 

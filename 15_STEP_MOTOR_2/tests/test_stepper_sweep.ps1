@@ -23,8 +23,9 @@ $main = Get-Content -Raw -LiteralPath (Join-Path $projectRoot 'main.c')
 Assert-Match $main '#define\s+STEPPER_LEFT\s+\(0U\)' 'Left direction must be 0'
 Assert-Match $main '#define\s+STEPPER_RIGHT\s+\(1U\)' 'Right direction must be 1'
 Assert-Match $main '#define\s+SWEEP_ANGLE\s+\(90U\)' 'Sweep angle must be 90 degrees'
+Assert-Match $main '#define\s+SWEEP_MOVE_TIME_MS\s+\(1600U\)' 'A 90-degree move must be allowed 1600 milliseconds'
 Assert-Match $main '#define\s+ENDPOINT_PAUSE_MS\s+\(1000U\)' 'Endpoint pause must be one second'
-Assert-Match $main 'while\s*\(stepmotor_is_busy\(STEPPER_ID\)\s*!=\s*0U\)' 'Motion helper must wait for completion'
+Assert-Match $main 'delay_ms\(SWEEP_MOVE_TIME_MS\);\s*stepmotor_stop\(STEPPER_ID\);\s*delay_ms\(ENDPOINT_PAUSE_MS\);' 'Motion helper must stop explicitly before the endpoint pause'
 Assert-Match $main 'stepmotor_move_and_wait\(STEPPER_LEFT\);\s*stepmotor_move_and_wait\(STEPPER_RIGHT\);' 'Main loop must alternate left then right'
 
 Write-Output 'Stepper sweep contract passed.'
