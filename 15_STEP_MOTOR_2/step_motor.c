@@ -44,9 +44,10 @@ void step_set_speed(uint8_t speed, uint8_t stepper_id)
         frequency = frequency > 0U ? frequency : 1U;
 
         uint32_t period = DCC_100_PWM2_INST_CLK_FREQ / frequency;
+
+        period = period<65536? period : 65535;
         DL_Timer_setLoadValue(DCC_100_PWM2_INST, period);
-        DL_Timer_setCaptureCompareValue(
-            DCC_100_PWM2_INST, period / 2, GPIO_DCC_100_PWM2_C0_IDX);
+        DL_Timer_setCaptureCompareValue( DCC_100_PWM2_INST, period / 2, GPIO_DCC_100_PWM2_C0_IDX);
     }
 }
 
