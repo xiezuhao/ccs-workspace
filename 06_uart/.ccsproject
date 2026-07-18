@@ -13,6 +13,6 @@
 	<activeTargetConfiguration value="targetConfigs/MSPM0G3507.ccxml"/>
 	<isTargetConfigurationManual value="false"/>
 	<sourceLookupPath value="${COM_TI_MSPM0_SDK_INSTALL_DIR}/source/ti/driverlib"/>
-	<origin value="C:/Users/37558/Desktop/03_Debug_BLOCK"/>
+	<origin value="C:/Users/30723/Desktop/03_Debug_BLOCK_已完成/03_Debug_BLOCK"/>
 	<filesToOpen value="README.md,empty.syscfg"/>
 </projectOptions>

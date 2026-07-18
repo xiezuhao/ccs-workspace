@@ -33,39 +33,41 @@
 #include "ti_msp_dl_config.h"
 #include "delay.h"
 #include "oled.h"
-#include <stdio.h>
+#include "stdio.h"
 #include "uart.h"
-#include "step_motor.h"
+#include "stepmotor.h"
 
 int main(void)
 {
     SYSCFG_DL_init();
-   // OLED_Init();
-    //OLED_ColorTurn(0);//0正常显示，1 反色显示
-   // OLED_DisplayTurn(0);//0正常显示 1 屏幕翻转显示
-   // OLED_Clear()
-   step_motor_init();
+    // OLED_Init();
+    // OLED_ColorTurn(0);//0显示正常，1反色显示
+    // OLED_DisplayTurn(0);//0显示正常，1屏幕反转显示
+    // OLED_Clear();
+    stepmotor_init();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    step_motor_dir_set( 0 , 2 );             //设置步进电机2的方向伟正转
+    stepmotor_dir_set(1,2);//设置步进电机2的方向为反转
 
     while (1) {
-
-        step_motor_step_set(1,2);
-        delay_ms(5);     //延时5毫秒
-          step_motor_step_set(0,2);
-        delay_ms(5);      //延时5毫秒
+        stepmotor_step_set(1,2);
+        delay_ms(5);//延时5毫秒
+        stepmotor_step_set(0,2);
+        delay_ms(5);//延时5毫秒
         // Toggle the LED every 500 ms
         // char oled_str[50];
         // int int_a = 20;
-        // sprintf(oled_str, "Integer: %d", int_a);
+        // sprintf(oled_str, (const char *)"Integer: %d", int_a);
         // OLED_ShowString(0, 46, (u8 *)oled_str, 16);
         // OLED_Refresh();
         
-
-        // OLED_ShowString(0, 0, (u8 *)"Hello, TI!", 16);
+        // OLED_ShowString(0,0,(u8*)"Hello World!",16);
         // OLED_Refresh();
-        delay_ms(500);
-  
-        UART_send_string(PRINT_INST, "hello, ti!\n");
+        // delay_ms(500);
+        // DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
+        // DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
+        // delay_ms(500);
+        // DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
+        // DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
+        // UART_send_string(PRINT_INST,"Hello World\n");
     }
 }

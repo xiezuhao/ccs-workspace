@@ -36,7 +36,7 @@ const pinFunction4     = system.clockTree["HFXT"];
 pinFunction4.inputFreq = 40;
 pinFunction4.enable    = true;
 
-GPIO1.$name                         = "STEP_MOTOR";
+GPIO1.$name                         = "step_motor";
 GPIO1.associatedPins.create(5);
 GPIO1.associatedPins[0].$name       = "PWM2";
 GPIO1.associatedPins[0].pin.$assign = "PA12";
@@ -77,9 +77,9 @@ I2C1.sclPinConfig.internalResistor     = "PULL_UP";
 SYSCTL.forceDefaultClkConfig = true;
 SYSCTL.clockTreeEn           = true;
 
+UART1.$name                            = "PRINT";
 UART1.targetBaudRate                   = 115200;
 UART1.enabledInterrupts                = ["RX"];
-UART1.$name                            = "PRINT";
 UART1.peripheral.rxPin.$assign         = "PA31";
 UART1.peripheral.txPin.$assign         = "PA28";
 UART1.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric2";

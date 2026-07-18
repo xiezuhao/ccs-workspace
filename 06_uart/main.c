@@ -35,37 +35,17 @@
 #include "oled.h"
 #include "stdio.h"
 #include "uart.h"
-#include "stepmotor.h"
 
 int main(void)
 {
     SYSCFG_DL_init();
-    // OLED_Init();
-    // OLED_ColorTurn(0);//0显示正常，1反色显示
-    // OLED_DisplayTurn(0);//0显示正常，1屏幕反转显示
-    // OLED_Clear();
-    stepmotor_init();
+    OLED_Init();
+    OLED_ColorTurn(0);//0显示正常，1反色显示
+    OLED_DisplayTurn(0);//0显示正常，1屏幕反转显示
+    OLED_Clear();
     NVIC_EnableIRQ(PRINT_INST_INT_IRQN);
-    stepmotor_dir_set(0,2);//设置步进电机2的方向为正转
-    stepmotor_start(2);//启动步进电机2
-    step_set_speed(60, 2);//设置步进电机2的速度为60角度/秒
 
     while (1) {
-        stepmotor_dir_set(0, 2);
-        stepmotor_set_angle(90, 2);//设置步进电机2转动90度
-        delay_ms(2000);//延时5秒
-        // stepmotor_dir_set(0,2);
-        // step_set_speed(30,2);//设置步进电机2的速度为30角度/秒
-        // delay_ms(1000);//延时3000毫秒
-        // step_set_speed(180,2);//设置步进电机2的速度为180角度/秒
-        // delay_ms(1000);//延时3000毫秒
-
-        // stepmotor_dir_set(1,2);
-        // step_set_speed(30,2);//设置步进电机2的速度为30角度/秒
-        // delay_ms(1000);//延时3000毫秒
-        // step_set_speed(180,2);//设置步进电机2的速度为180角度/秒
-        // delay_ms(1000);//延时3000毫秒
-
         // Toggle the LED every 500 ms
         // char oled_str[50];
         // int int_a = 20;
@@ -75,12 +55,12 @@ int main(void)
         
         // OLED_ShowString(0,0,(u8*)"Hello World!",16);
         // OLED_Refresh();
-        // delay_ms(500);
-        // DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
-        // DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
-        // delay_ms(500);
-        // DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
-        // DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
-        // UART_send_string(PRINT_INST,"Hello World\n");
+        delay_ms(500);
+        DL_GPIO_clearPins(LED_PORT, LED_LED0_PIN);
+        DL_GPIO_clearPins(LED_PORT, LED_LED1_PIN);
+        delay_ms(500);
+        DL_GPIO_setPins(LED_PORT, LED_LED0_PIN);
+        DL_GPIO_setPins(LED_PORT, LED_LED1_PIN);
+        UART_send_string(PRINT_INST,"Hello World\n");
     }
 }

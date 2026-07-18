@@ -39,9 +39,9 @@ pinFunction4.enable    = true;
 GPIO1.$name                         = "LED";
 GPIO1.associatedPins.create(2);
 GPIO1.associatedPins[0].$name       = "LED0";
-GPIO1.associatedPins[0].pin.$assign = "PA14";
+GPIO1.associatedPins[0].pin.$assign = "PB14";
 GPIO1.associatedPins[1].$name       = "LED1";
-GPIO1.associatedPins[1].pin.$assign = "PA15";
+GPIO1.associatedPins[1].pin.$assign = "PB15";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
@@ -74,8 +74,8 @@ SYSCTL.clockTreeEn           = true;
 UART1.$name                            = "PRINT";
 UART1.targetBaudRate                   = 115200;
 UART1.enabledInterrupts                = ["RX"];
-UART1.peripheral.rxPin.$assign         = "PA11";
-UART1.peripheral.txPin.$assign         = "PA10";
+UART1.peripheral.rxPin.$assign         = "PA31";
+UART1.peripheral.txPin.$assign         = "PA28";
 UART1.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric2";
 UART1.txPinConfig.direction            = scripting.forceWrite("OUTPUT");
 UART1.txPinConfig.hideOutputInversion  = scripting.forceWrite(false);
