@@ -1,6 +1,26 @@
 {
     "configurations": [
         {
+            "name": "DCC_101_v1",
+            "includePath": [
+                "${workspaceFolder}/DCC_101_v1",
+                "${workspaceFolder}/DCC_101_v1/Debug",
+                "${workspaceFolder}/**",
+                "C:/TI/mspm0_sdk_2_10_00_04/source",
+                "C:/TI/mspm0_sdk_2_10_00_04/source/third_party/CMSIS/Core/Include",
+                "D:/ti/CCS2050/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/include"
+            ],
+            "defines": [
+                "__MSPM0G3507__",
+                "__USE_SYSCONFIG__"
+            ],
+            "compilerPath": "D:/ti/CCS2050/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe",
+            "compileCommands": "${workspaceFolder}/DCC_101_v1/Debug/.clangd/compile_commands.json",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "windows-clang-arm"
+        },
+        {
             "name": "15_STEP_MOTOR_2",
             "includePath": [
                 "${workspaceFolder}/15_STEP_MOTOR_2",
