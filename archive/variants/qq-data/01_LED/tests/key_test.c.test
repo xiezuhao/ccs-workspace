@@ -1,0 +1,98 @@
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+
+#define KEY_H
+#define DELAY_H
+
+typedef struct {
+    uint32_t unused;
+} GPIO_Regs;
+
+static GPIO_Regs mock_key_port;
+#define KEY_PORT (&mock_key_port)
+#define KEY_KEY1_PB21_PIN (1u << 21)
+
+static uint32_t read_script[16];
+static size_t read_count;
+static size_t read_index;
+static uint32_t delay_call_count;
+static uint32_t delay_total_ms;
+
+static void set_read_script(const uint32_t *values, size_t count)
+{
+    size_t index;
+    for (index = 0; index < count; ++index) {
+        read_script[index] = values[index];
+    }
+    read_count = count;
+    read_index = 0;
+    delay_call_count = 0;
+    delay_total_ms = 0;
+}
+
+static uint32_t DL_GPIO_readPins(GPIO_Regs *port, uint32_t pins)
+{
+    uint32_t value;
+    (void) port;
+    value = read_script[(read_index < read_count) ? read_index++ : (read_count - 1)];
+    return value & pins;
+}
+
+static void delay_ms(uint32_t ms)
+{
+    ++delay_call_count;
+    delay_total_ms += ms;
+}
+
+#include "../key.c"
+
+#define CHECK(condition, message) \
+    do { \
+        if (!(condition)) { \
+            fputs("FAIL: " message "\n", stderr); \
+            return 1; \
+        } \
+    } while (0)
+
+int main(void)
+{
+    const uint32_t requested_pin = 1u << 3;
+    const uint32_t released[] = {KEY_KEY1_PB21_PIN};
+    const uint32_t bounce[] = {0u, KEY_KEY1_PB21_PIN};
+    const uint32_t complete_press[] = {0u, 0u, 0u, KEY_KEY1_PB21_PIN};
+    const uint32_t requested_high[] = {requested_pin};
+    const uint32_t requested_low[] = {0u};
+
+    set_read_script(requested_high, 1);
+    CHECK(get_key_state(requested_pin) == 1u,
+          "get_key_state did not read the requested pin");
+
+    set_read_script(requested_low, 1);
+    CHECK(get_key_state(requested_pin) == 0u,
+          "get_key_state did not report an active-low press");
+
+    set_read_script(released, 1);
+    CHECK(key_pressed(KEY_PORT, KEY_KEY1_PB21_PIN) == 0u,
+          "released key produced an event");
+    CHECK(delay_call_count == 0u, "released key was unnecessarily delayed");
+
+    set_read_script(bounce, 2);
+    CHECK(key_pressed(KEY_PORT, KEY_KEY1_PB21_PIN) == 0u,
+          "bounce produced an event");
+    CHECK(delay_call_count == 1u && delay_total_ms == 10u,
+          "press debounce timing is incorrect");
+
+    set_read_script(complete_press, 4);
+    CHECK(key_pressed(KEY_PORT, KEY_KEY1_PB21_PIN) == 1u,
+          "complete press-and-release did not produce an event");
+    CHECK(delay_call_count == 2u && delay_total_ms == 20u,
+          "complete event debounce timing is incorrect");
+
+    set_read_script(released, 1);
+    CHECK(key_pressed(KEY_PORT, KEY_KEY1_PB21_PIN) == 0u,
+          "one completed press produced a second event");
+
+    puts("PASS: key module");
+    return 0;
+}
